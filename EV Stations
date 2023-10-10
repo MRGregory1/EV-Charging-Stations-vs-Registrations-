@@ -1,0 +1,35 @@
+import pandas as pd
+
+# Load the dataset
+df_stations = pd.read_csv("C:\\Users\\Projects\\EV Stations by State.csv")
+
+# Filter rows where the country is 'USA'
+df_usa_stations = df_stations[df_stations['Country'] == 'US']
+
+# Select only the 'State' and 'Access code' columns
+df_cleaned_stations = df_usa_stations[['State', 'Access Code']]
+
+# Check the first few rows of the cleaned DataFrame to verify the data
+print(df_cleaned_stations.head())
+
+# Write the cleaned DataFrame to a CSV file
+#df_cleaned_stations.to_csv('Cleaned_EV_Stations.csv', index=False)
+
+#the State column lists each occurrence of an EV charging station
+#the Access Code column lists whether the EV charging station is public or private
+#Count each charging station per state grouped by Access Code 
+
+# Group the DataFrame by 'State' and 'Access Code', and count the occurrences
+charging_station_counts = df_cleaned_stations.groupby(['State', 'Access Code']).size().unstack(fill_value=0)
+
+# Rename the columns for clarity
+charging_station_counts.columns = ['Private Stations', 'Public Stations']
+
+# Reset the index to make 'State' a regular column
+charging_station_counts = charging_station_counts.reset_index()
+
+# Display the resulting DataFrame
+print(charging_station_counts)
+
+# Save the charging station counts DataFrame to a CSV file
+charging_station_counts.to_csv('EV_Stations_Counts_by_State.csv', index=False)
