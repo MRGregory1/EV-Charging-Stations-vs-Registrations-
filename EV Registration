@@ -1,0 +1,18 @@
+#Clean Registration dataset
+import pandas as pd
+
+# Load the dataset
+df_registration = pd.read_csv('C:\\Users\\reish\\OneDrive\\Projects\\EV Registration by State.csv')
+
+# Check for missing values
+missing_values = df_registration.isnull().sum()
+print("Missing Values:\n", missing_values)
+
+# Fill missing values with zeros (assuming missing values indicate zero registrations)
+df_registration['Registration Count'].fillna(0, inplace=True)
+
+# Capitalize state names for consistency
+df_registration['State'] = df_registration['State'].str.capitalize()
+
+# Explore the dataset
+print("Summary Statistics:\n", df_registration.describe())
