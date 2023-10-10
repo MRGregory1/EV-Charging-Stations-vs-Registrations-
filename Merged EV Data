@@ -1,0 +1,20 @@
+#Create new dataset that includes the State column, Registration column
+#and the associated Public Station column for that state by 
+#merge the two datasets based on the State column using th Pandas library
+
+import pandas as pd
+
+# Load the EV Registration dataset
+df_registration = pd.read_csv('C:\\Users\\reish\\OneDrive\\Projects\\EV_Registration_Counts_by_State.csv')
+
+# Load the EV Stations dataset
+df_stations = pd.read_csv('C:\\Users\\reish\\OneDrive\\Projects\\EV_Stations_Counts_by_State.csv')
+
+# Merge the two datasets on the 'State' column
+merged_df = pd.merge(df_registration, df_stations[['State', 'Public Stations']], on='State', how='left')
+
+# Fill missing values in the 'Public Stations' column with 0 (assuming missing values mean 0 public stations)
+merged_df['Public Stations'].fillna(0, inplace=True)
+
+# Save the merged dataset to a new CSV file
+merged_df.to_csv('Merged_EV_Data.csv', index=False, columns=['State', 'Registration Count', 'Public Stations'])
